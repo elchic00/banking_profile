@@ -1,12 +1,10 @@
 import './App.css';
 import Profile from './components/Profile';
 
-function App() {
+export default function App() {
   return (
    <>
    <Profile/>
    </>
   );
 }
-
-export default App;
