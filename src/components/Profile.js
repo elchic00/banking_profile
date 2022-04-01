@@ -2,6 +2,7 @@ import Clock from './Clock';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Box } from '@mui/material';
+import Form from './Form'
 
 export default function Profile(){
     const [user,setUser] = useState('User')
@@ -26,13 +27,13 @@ export default function Profile(){
 
     const debitList = debit.map(d =>
     <li key={d.id}> 
-    <b style={{textDecoration:'underline'}}>Description:</b> {d.description},<b style={{textDecoration:'underline'}}>Price:</b> {d.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {d.date.slice(0,10)}
+    <b style={{textDecoration:'underline'}}>Description:</b> {d.description},<b style={{textDecoration:'underline'}}>Price:</b> ${d.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {d.date.slice(0,10)}
      </li>
     ) 
 
     const creditList = credit.map(c =>
         <li key={c.id}> 
-        <b style={{textDecoration:'underline'}}>Description:</b> {c.description}, <b style={{textDecoration:'underline'}}> Price:</b> {c.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {c.date.slice(0,10)}
+        <b style={{textDecoration:'underline'}}>Description:</b> {c.description}, <b style={{textDecoration:'underline'}}> Price:</b> ${c.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {c.date.slice(0,10)}
          </li>
         ) 
 
@@ -40,25 +41,32 @@ export default function Profile(){
         function ToggleGroup() {
           const activated = specifyData
           return (
-            <div style={{marginLeft:585}} >
+            <Box sx={{textAlign: 'center'}} >
               {types.map((type) => (
                 <Button variant="contained" active={specifyData === type} onClick={() => setSpecifyData(type)}>
                   {type}
                 </Button>
               ))}
-            </div>
+            </Box>
           );
         }
         
+        function handleSubmit(data){
+            console.log(data)
+            setUser(data)
+            // setUser('test')
+        }
+
     return(
-        <Box>
-    <Box sx={{display:'flex',  justifyContent: 'center', }}>
-        <h2 style={{marginRight:'10px'}}> Hello {user}! </h2> 
-        <Clock/>
-  </Box>
- <ToggleGroup />
-  <ul style={{ marginLeft: 400}}>{specifyData ==='debit' ? debitList: creditList}</ul>
-    </Box>
+    <>
+        <Box sx={{display:'flex',  justifyContent: 'center', }}>
+            <h2 style={{marginRight:'10px'}}> Hello {user}! </h2> 
+            <Clock/>
+        </Box>
+        <ToggleGroup />
+        <ul style={{ textAlign: 'center'}}>{specifyData ==='debit' ? debitList: creditList}</ul>
+    <Form changeData={handleSubmit}/>
+    </>
     )
 }
 
