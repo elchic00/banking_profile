@@ -65,7 +65,7 @@ export default function Profile(){
           return (
             <Box sx={{textAlign: 'center',marginBottom:2}} >
               {types.map((type) => (
-                <Button variant="contained" active={debitOrCredit === type} onClick={() => setDebitOrCredit(type)}>
+                <Button sx={{marginRight:1}} variant="contained" active={debitOrCredit === type} onClick={() => setDebitOrCredit(type)}>
                   {type}
                 </Button>
               ))}
