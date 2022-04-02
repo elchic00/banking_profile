@@ -7,16 +7,16 @@ export default function Form(props){
         bckClr:'',
         txtClr:'',
     })
+    const [isDisabled,setIsDisabled] = useState(false)
 
     function handleSubmit(e){
         e.preventDefault();
         props.changeData(formData);
-    
+        setIsDisabled(true)
     }
 
     function handleChange(e){
         e.preventDefault();
-        console.log(e.target.name)
         if(e.target.name ==='username')
             setFormData(prev=>({...prev, userName: e.target.value}))
         else if(e.target.name ==='bckclr')
@@ -48,7 +48,7 @@ variant='contained'
   name='txtclr'
   onChange={handleChange}
 /><br/><br/>
-<Button sx={{color:'black',borderColor:'black'}} variant='outlined' type='submit'>
+<Button sx={{color:'black',borderColor:'black'}} type='submit' variant='outlined' disabled={isDisabled} >
 Change
 </Button>
 
