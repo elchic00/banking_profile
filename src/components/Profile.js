@@ -5,21 +5,25 @@ import { Button, Box } from '@mui/material';
 import Form from './Form'
 
 export default function Profile(){
-    const [user,setUser] = useState('User')
-    const [debit, setDebit] = useState([])
-    const [credit,setCredit] = useState([])
-    const [specifyData, setSpecifyData] = useState('debit')
-    const [bckClr,setBckClr] = useState('')
-    const [txtClr,setTxtClr] = useState('')
+    const [form,setForm] = useState({
+        user: 'User',
+        bckClr: '',
+        txtClr: ''
+    })
+    const [finData, setFinData] = useState({
+        debit:[],
+        credit:[]
+    })
+    const [debitOrCredit, setDebitOrCredit] = useState('debit')
     
     async function getDebits(){
         const debits = await axios.get('https://moj-api.herokuapp.com/debits')
-        setDebit(debits.data) 
+        setFinData(prev=>({...prev, debit: debits.data})) 
     }
 
     async function getCredits(){
         const credits = await axios.get('https://moj-api.herokuapp.com/credits')
-        setCredit(credits.data)
+        setFinData(prev=>({...prev, credit: credits.data})) 
     }
 
     useEffect( () => {
@@ -27,25 +31,32 @@ export default function Profile(){
       getCredits();
       }, []);
 
-    const debitList = debit.map(d =>
-    <li style={{ textAlign: 'center', marginBottom:1}} key={d.id}> 
-    <b style={{textDecoration:'underline'}}>Description:</b> {d.description},<b style={{textDecoration:'underline'}}>Price:</b> ${d.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {d.date.slice(0,10)}
+      const listStyle = {
+        textAlign: 'center', marginBottom:1
+      }
+      const underline = {
+        textDecoration:'underline'
+      }
+
+    const debitList = finData.debit.map(d =>
+    <li style={listStyle} key={d.id}> 
+    <b style={underline}>Description:</b> {d.description},<b style={underline}> Price:</b> ${d.amount}, <b style={underline}>Date:</b> {d.date.slice(0,10)}
      </li>
     ) 
 
-    const creditList = credit.map(c =>
-        <li style={{ textAlign: 'center'}} key={c.id}> 
-        <b style={{textDecoration:'underline'}}>Description:</b> {c.description}, <b style={{textDecoration:'underline'}}> Price:</b> ${c.amount}, <b style={{textDecoration:'underline'}}>Date:</b> {c.date.slice(0,10)}
+    const creditList = finData.credit.map(c =>
+        <li style={listStyle} key={c.id}> 
+        <b style={underline}>Description:</b> {c.description}, <b style={underline}> Price:</b> ${c.amount}, <b style={underline}>Date:</b> {c.date.slice(0,10)}
          </li>
         ) 
 
         const types = ["debit", "credit"];
-        function ToggleGroup() {
-          const activated = specifyData
+        function ToggleData() {
+          const activated = debitOrCredit
           return (
             <Box sx={{textAlign: 'center',marginBottom:2}} >
               {types.map((type) => (
-                <Button variant="contained" active={specifyData === type} onClick={() => setSpecifyData(type)}>
+                <Button variant="contained" active={debitOrCredit === type} onClick={() => setDebitOrCredit(type)}>
                   {type}
                 </Button>
               ))}
@@ -54,20 +65,17 @@ export default function Profile(){
         }
         
         function handleSubmit(formData){
-            setBckClr(formData.bckClr)
-            setUser(formData.userName)
-            setTxtClr(formData.txtClr)
-            
+            setForm(prev=>({...prev, bckClr: formData.bckClr, user: formData.userName, txtClr: formData.txtClr}))
         }
 
     return(
-    <Box sx={{backgroundColor: bckClr, height: '100vh', color:txtClr}} >
+    <Box sx={{backgroundColor: form.bckClr, height: '100vh', color:form.txtClr}} >
         <Box sx={{display:'flex',  justifyContent: 'center', }}>
-            <h2 style={{marginRight:'10px'}}> Hello {user}! </h2> 
+            <h2 style={{marginRight:'10px'}}> Hello {form.user}! </h2> 
             <Clock/>
         </Box>
-        <ToggleGroup />
-      {specifyData ==='debit' ? debitList: creditList}<br/>
+        <ToggleData />
+      {debitOrCredit ==='debit' ? debitList: creditList}<br/>
     <Form changeData={handleSubmit}/>
     </Box>
     )
