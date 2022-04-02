@@ -37,18 +37,27 @@ export default function Profile(){
       const underline = {
         textDecoration:'underline'
       }
+      const ulListStyle = {
+        display:'inline-block',justifyContent:'center'
+      }
 
-    const debitList = finData.debit.map(d =>
-    <li style={listStyle} key={d.id}> 
-    <b style={underline}>Description:</b> {d.description},<b style={underline}> Price:</b> ${d.amount}, <b style={underline}>Date:</b> {d.date.slice(0,10)}
-     </li>
+    function debitList(){
+        const debitlist = finData.debit.map(d =>
+        <li key={d.id}> 
+        <b style={underline}>Description:</b> {d.description}, <b style={underline}> Price:</b> ${d.amount}, <b style={underline}>Date:</b> {d.date.slice(0,10)}
+        </li>
     ) 
+    return <ul style={ulListStyle}>{debitlist}</ul> 
+}
 
-    const creditList = finData.credit.map(c =>
-        <li style={listStyle} key={c.id}> 
+     function creditList(){
+         const creditlist = finData.credit.map(c =>
+        <li  key={c.id}> 
         <b style={underline}>Description:</b> {c.description}, <b style={underline}> Price:</b> ${c.amount}, <b style={underline}>Date:</b> {c.date.slice(0,10)}
          </li>
-        ) 
+         )
+        return <ul style={ulListStyle}>{creditlist}</ul> 
+    }
 
         const types = ["debit", "credit"];
         function ToggleData() {
@@ -75,7 +84,7 @@ export default function Profile(){
             <Clock/>
         </Box>
         <ToggleData />
-      {debitOrCredit ==='debit' ? debitList: creditList}<br/>
+      <Box sx={listStyle}>{debitOrCredit ==='debit' ? debitList(): creditList()}<br/> </Box>
     <Form changeData={handleSubmit}/>
     </Box>
     )
