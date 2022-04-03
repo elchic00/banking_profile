@@ -1,0 +1,18 @@
+b {
+  text-decoration: underline;
+}
+
+ul {
+  display: inline-block;
+  columns: 2;
+}
+ol {
+  display: inline-block;
+  columns: 2;
+}
+
+li {
+  margin-bottom: 5px;
+  text-align: left;
+  margin-left: 50px;
+}

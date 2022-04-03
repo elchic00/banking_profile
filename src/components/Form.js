@@ -16,14 +16,14 @@ export default function Form(props) {
     setIsDisabled(true);
   }
 
-  function handleChange(e) {
-    e.preventDefault();
-    if (e.target.name === "username")
-      setFormData((prev) => ({ ...prev, userName: e.target.value }));
-    else if (e.target.name === "bckclr")
-      setFormData((prev) => ({ ...prev, bckClr: e.target.value }));
-    else if (e.target.name === "txtclr")
-      setFormData((prev) => ({ ...prev, txtClr: e.target.value }));
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
   }
 
   return (
@@ -31,7 +31,7 @@ export default function Form(props) {
       <Input
         placeholder="Username"
         value={formData.userName}
-        name="username"
+        name="userName"
         onChange={handleChange}
       />
       <br />
@@ -39,14 +39,14 @@ export default function Form(props) {
         variant="contained"
         placeholder="Background Color"
         value={formData.bckClr}
-        name="bckclr"
+        name="bckClr"
         onChange={handleChange}
       />
       <br />
       <Input
         placeholder="Text Color"
         value={formData.txtClr}
-        name="txtclr"
+        name="txtClr"
         onChange={handleChange}
       />
       <br />

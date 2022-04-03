@@ -1,21 +1,23 @@
 import Clock from "./Clock";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Box } from "@mui/material";
+import { Box, ToggleButtonGroup, ToggleButton } from "@mui/material";
 import Form from "./Form";
+import profile from "../style/profile.css";
 
 export default function Profile() {
   const [form, setForm] = useState({
     user: "User",
     bckClr: "",
     txtClr: "",
+    disableForm: "false",
+    toggleTextColor: "black",
   });
   const [finData, setFinData] = useState({
     debit: [],
     credit: [],
   });
   const [debitOrCredit, setDebitOrCredit] = useState("debit");
-  const [disableForm, setDisableForm] = useState("false");
 
   async function getFinData() {
     const debits = await axios.get("https://moj-api.herokuapp.com/debits");
@@ -31,39 +33,37 @@ export default function Profile() {
     getFinData();
   }, []);
 
-  const liListStyle = {
-    textAlign: "center",
-    marginBottom: 1,
-  };
-  const underline = {
-    textDecoration: "underline",
-  };
-  const ulListStyle = {
-    display: "inline-block",
-    justifyContent: "center",
-  };
+  function handleSubmit(formData) {
+    setForm((prev) => ({
+      ...prev,
+      bckClr: formData.bckClr,
+      user: formData.userName,
+      txtClr: formData.txtClr,
+      disableForm: "true",
+      toggleTextColor: formData.txtClr,
+    }));
+  }
 
   function debitList() {
     const debitlist = finData.debit.map((d) => (
       <li key={d.id}>
-        <b style={underline}>Description:</b>
-        {d.description}, <b style={underline}> Price:</b>${d.amount},{" "}
-        <b style={underline}>Date:</b>
-        {d.date.slice(0, 10)}
+        <b>Description:</b> {d.description} <br />
+        <b> Price:</b> ${d.amount} <br />
+        <b>Date:</b> {d.date.slice(0, 10)}
       </li>
     ));
-    return <ul style={ulListStyle}>{debitlist}</ul>;
+    return <ol>{debitlist}</ol>;
   }
 
   function creditList() {
     const creditlist = finData.credit.map((c) => (
       <li key={c.id}>
-        <b style={underline}>Description:</b> {c.description},{" "}
-        <b style={underline}> Price:</b> ${c.amount},{" "}
-        <b style={underline}>Date:</b> {c.date.slice(0, 10)}
+        <b>Description:</b> {c.description} <br />
+        <b> Price:</b> ${c.amount} <br />
+        <b>Date:</b> {c.date.slice(0, 10)}
       </li>
     ));
-    return <ul style={ulListStyle}>{creditlist}</ul>;
+    return <ol>{creditlist}</ol>;
   }
 
   const types = ["debit", "credit"];
@@ -72,28 +72,24 @@ export default function Profile() {
     return (
       <Box sx={{ textAlign: "center", marginBottom: 2 }}>
         {types.map((type) => (
-          <Button
-            sx={{ marginRight: 1 }}
-            variant="contained"
-            active={debitOrCredit === type}
-            onClick={() => setDebitOrCredit(type)}
-          >
-            {type}
-          </Button>
+          <ToggleButtonGroup color="primary" value={debitOrCredit}>
+            <ToggleButton
+              sx={{ color: form.toggleTextColor }}
+              value={type}
+              onClick={() => setDebitOrCredit(type)}
+            >
+              {type}
+            </ToggleButton>
+          </ToggleButtonGroup>
         ))}
       </Box>
     );
   }
 
-  function handleSubmit(formData) {
-    setDisableForm("true");
-    setForm((prev) => ({
-      ...prev,
-      bckClr: formData.bckClr,
-      user: formData.userName,
-      txtClr: formData.txtClr,
-    }));
-  }
+  const liListStyle = {
+    textAlign: "center",
+    marginBottom: 1,
+  };
 
   return (
     <Box
@@ -108,7 +104,7 @@ export default function Profile() {
         {debitOrCredit === "debit" ? debitList() : creditList()}
         <br />{" "}
       </Box>
-      {disableForm === "false" ? <Form changeData={handleSubmit} /> : null}
+      {form.disableForm === "false" ? <Form changeData={handleSubmit} /> : null}
     </Box>
   );
 }
