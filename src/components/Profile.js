@@ -70,7 +70,7 @@ export default function Profile() {
   function ToggleData() {
     const activated = debitOrCredit;
     return (
-      <Box sx={{ textAlign: "center", marginBottom: 2 }}>
+      <Box sx={{ textAlign: "center", marginBottom: 1 }}>
         {types.map((type) => (
           <ToggleButtonGroup color="primary" value={debitOrCredit}>
             <ToggleButton

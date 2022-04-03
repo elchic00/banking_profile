@@ -27,24 +27,29 @@ export default function Form(props) {
   }
 
   return (
-    <form style={{ textAlign: "center" }} onSubmit={handleSubmit}>
-      <Input
-        placeholder="Username"
+    <Box
+      component="form"
+      style={{
+        "& > :not(style)": { m: 1, width: "25ch" },
+        textAlign: "center",
+      }}
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        id="outlined-name"
         value={formData.userName}
+        label="Username"
         name="userName"
         onChange={handleChange}
       />
-      <br />
-      <Input
-        variant="contained"
-        placeholder="Background Color"
+      <TextField
         value={formData.bckClr}
         name="bckClr"
+        label="Background Color"
         onChange={handleChange}
       />
-      <br />
-      <Input
-        placeholder="Text Color"
+      <TextField
+        label="Text Color"
         value={formData.txtClr}
         name="txtClr"
         onChange={handleChange}
@@ -52,13 +57,13 @@ export default function Form(props) {
       <br />
       <br />
       <Button
-        sx={{ color: "black", borderColor: "black" }}
+        sx={{ color: "black", borderColor: "black", marginBottom: 2 }}
         type="submit"
         variant="outlined"
         disabled={isDisabled}
       >
         Change
       </Button>
-    </form>
+    </Box>
   );
 }
