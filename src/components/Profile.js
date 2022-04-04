@@ -1,7 +1,12 @@
 import Clock from "./Clock";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, ToggleButtonGroup, ToggleButton } from "@mui/material";
+import {
+  Box,
+  ToggleButtonGroup,
+  ToggleButton,
+  LinearProgress,
+} from "@mui/material";
 import Form from "./Form";
 import profile from "../style/profile.css";
 
@@ -14,6 +19,7 @@ export default function Profile() {
     toggleTextColor: "black",
   });
   const [finData, setFinData] = useState({
+    loading: "true",
     debit: [],
     credit: [],
   });
@@ -26,6 +32,7 @@ export default function Profile() {
       ...prev,
       debit: debits.data,
       credit: credits.data,
+      loading: "false",
     }));
   }
 
@@ -86,21 +93,22 @@ export default function Profile() {
     );
   }
 
-  const liListStyle = {
-    textAlign: "center",
-    marginBottom: 1,
-  };
-
   return (
     <Box
-      sx={{ backgroundColor: form.bckClr, height: "100vh", color: form.txtClr }}
+      sx={{
+        backgroundColor: form.bckClr,
+        height: "100vh",
+        color: form.txtClr,
+        textAlign: "center",
+      }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <h2 style={{ marginRight: "10px" }}> Hello {form.user}! </h2>
         <Clock />
       </Box>
       <ToggleData />
-      <Box sx={liListStyle}>
+      {finData.loading === "true" && <LinearProgress />}
+      <Box sx={{ marginBottom: 1 }}>
         {debitOrCredit === "debit" ? debitList() : creditList()}
         <br />{" "}
       </Box>
