@@ -11,7 +11,7 @@ import Form from "./Form";
 import profile from "../style/profile.css";
 
 export default function Profile() {
-  const [form, setForm] = useState({
+  const [profile, setProfileData] = useState({
     user: "User",
     bckClr: "",
     txtClr: "",
@@ -29,7 +29,6 @@ export default function Profile() {
     const debits = await axios.get("https://moj-api.herokuapp.com/debits");
     const credits = await axios.get("https://moj-api.herokuapp.com/credits");
     setFinData((prev) => ({
-      ...prev,
       debit: debits.data,
       credit: credits.data,
       loading: "false",
@@ -41,13 +40,13 @@ export default function Profile() {
   }, []);
 
   function handleSubmit(formData) {
-    setForm((prev) => ({
+    setProfileData((prev) => ({
       ...prev,
-      bckClr: formData.bckClr,
+      bckClr: formData.backgrColor,
       user: formData.userName,
-      txtClr: formData.txtClr,
+      txtClr: formData.textColor,
       disableForm: "true",
-      toggleTextColor: formData.txtClr,
+      toggleTextColor: formData.textColor,
     }));
   }
 
@@ -75,13 +74,12 @@ export default function Profile() {
 
   const types = ["debit", "credit"];
   function ToggleData() {
-    const activated = debitOrCredit;
     return (
-      <Box sx={{ textAlign: "center", marginBottom: 1 }}>
+      <Box sx={{ textAlign: "center", mb: 1 }}>
         {types.map((type) => (
           <ToggleButtonGroup color="primary" value={debitOrCredit}>
             <ToggleButton
-              sx={{ color: form.toggleTextColor }}
+              sx={{ color: profile.toggleTextColor }}
               value={type}
               onClick={() => setDebitOrCredit(type)}
             >
@@ -96,23 +94,22 @@ export default function Profile() {
   return (
     <Box
       sx={{
-        backgroundColor: form.bckClr,
+        backgroundColor: profile.bckClr,
         height: "100vh",
-        color: form.txtClr,
+        color: profile.txtClr,
         textAlign: "center",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <h2 style={{ marginRight: "10px" }}> Hello {form.user}! </h2>
+        <h2 style={{ marginRight: "10px" }}> Hello {profile.user}! </h2>
         <Clock />
       </Box>
-      <ToggleData />
-      {finData.loading === "true" && <LinearProgress />}
-      <Box sx={{ marginBottom: 1 }}>
-        {debitOrCredit === "debit" ? debitList() : creditList()}
-        <br />{" "}
-      </Box>
-      {form.disableForm === "false" ? <Form changeData={handleSubmit} /> : null}
+      {finData.loading === "true" ? <LinearProgress /> : <ToggleData />}
+
+      {debitOrCredit === "debit" ? debitList() : creditList()}
+      <br />
+      <br />
+      {profile.disableForm === "false" && <Form changeData={handleSubmit} />}
     </Box>
   );
 }

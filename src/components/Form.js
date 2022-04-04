@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
-import { FormControl, TextField, Input } from "@mui/material";
+import { useState } from "react";
+import { TextField } from "@mui/material";
 import { Button, Box } from "@mui/material";
-export default function Form(props) {
+
+export default function Form({ changeData }) {
   const [formData, setFormData] = useState({
     userName: "",
-    bckClr: "",
-    txtClr: "",
+    backgrColor: "",
+    textColor: "",
   });
-  //disable button after click
-  const [isDisabled, setIsDisabled] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.changeData(formData);
-    setIsDisabled(true);
+    changeData(formData);
   }
 
   function handleChange(event) {
@@ -36,31 +34,29 @@ export default function Form(props) {
       onSubmit={handleSubmit}
     >
       <TextField
-        id="outlined-name"
         value={formData.userName}
         label="Username"
         name="userName"
         onChange={handleChange}
       />
       <TextField
-        value={formData.bckClr}
-        name="bckClr"
+        value={formData.backgrColor}
+        name="backgrColor"
         label="Background Color"
         onChange={handleChange}
       />
       <TextField
+        sx={{ mb: 3 }}
+        value={formData.textColor}
         label="Text Color"
-        value={formData.txtClr}
-        name="txtClr"
+        name="textColor"
         onChange={handleChange}
       />
-      <br />
       <br />
       <Button
         sx={{ color: "black", borderColor: "black", marginBottom: 2 }}
         type="submit"
         variant="outlined"
-        disabled={isDisabled}
       >
         Change
       </Button>
