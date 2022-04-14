@@ -8,7 +8,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import Form from "./Form";
-import profile from "../style/profile.css";
+import "../style/profile.css";
 
 export default function Profile() {
   const [profile, setProfileData] = useState({
