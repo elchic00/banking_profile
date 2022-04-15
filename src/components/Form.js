@@ -2,12 +2,8 @@ import { useState } from "react";
 import { TextField } from "@mui/material";
 import { Button, Box } from "@mui/material";
 
-export default function Form({ changeData }) {
-  const [formData, setFormData] = useState({
-    userName: "",
-    backgrColor: "",
-    textColor: "",
-  });
+export default function Form({ changeData, data }) {
+  const [formData, setFormData] = useState({data});
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -36,12 +32,12 @@ export default function Form({ changeData }) {
       <TextField
         value={formData.userName}
         label="Username"
-        name="userName"
+        name="user"
         onChange={handleChange}
       />
       <TextField
         value={formData.backgrColor}
-        name="backgrColor"
+        name="bckClr"
         label="Background Color"
         onChange={handleChange}
       />
@@ -49,7 +45,7 @@ export default function Form({ changeData }) {
         sx={{ mb: 3 }}
         value={formData.textColor}
         label="Text Color"
-        name="textColor"
+        name="txtClr"
         onChange={handleChange}
       />
       <br />

@@ -16,7 +16,6 @@ export default function Profile() {
     bckClr: "",
     txtClr: "",
     disableForm: "false",
-    toggleTextColor: "black",
   });
   const [finData, setFinData] = useState({
     loading: "true",
@@ -42,11 +41,11 @@ export default function Profile() {
   function handleSubmit(formData) {
     setProfileData((prev) => ({
       ...prev,
-      bckClr: formData.backgrColor,
-      user: formData.userName,
-      txtClr: formData.textColor,
+      bckClr: formData.bckClr,
+      user: formData.user,
+      txtClr: formData.txtClr,
       disableForm: "true",
-      toggleTextColor: formData.textColor,
+      toggleTextColor: formData.txtClr,
     }));
   }
 
@@ -109,7 +108,7 @@ export default function Profile() {
       {debitOrCredit === "debit" ? debitList() : creditList()}
       <br />
       <br />
-      {profile.disableForm === "false" && <Form changeData={handleSubmit} />}
+      {profile.disableForm === "false" && <Form data={profile} changeData={handleSubmit} />}
     </Box>
   );
 }
