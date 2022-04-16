@@ -12,10 +12,9 @@ import "../style/profile.css";
 
 export default function Profile() {
   const [profile, setProfileData] = useState({
-    user: "User",
-    bckClr: "",
-    txtClr: "",
-    disableForm: "false",
+    'Username': "User",
+    'Background Color': "",
+    'Text Color': "",
   });
   const [finData, setFinData] = useState({
     loading: "true",
@@ -23,7 +22,8 @@ export default function Profile() {
     credit: [],
   });
   const [debitOrCredit, setDebitOrCredit] = useState("debit");
-
+  const [disableForm, setDisableForm] = useState('false')
+  
   async function getFinData() {
     const debits = await axios.get("https://moj-api.herokuapp.com/debits");
     const credits = await axios.get("https://moj-api.herokuapp.com/credits");
@@ -39,13 +39,14 @@ export default function Profile() {
   }, []);
 
   function handleSubmit(formData) {
+    setDisableForm('true')
+
     setProfileData((prev) => ({
       ...prev,
-      bckClr: formData.bckClr,
-      user: formData.user,
-      txtClr: formData.txtClr,
-      disableForm: "true",
-      toggleTextColor: formData.txtClr,
+      "Background Color": formData["Background Color"],
+      Username: formData["Username"],
+      "Text Color": formData["Text Color"],
+      toggleTextColor: formData['Text Color'],
     }));
   }
 
@@ -93,14 +94,14 @@ export default function Profile() {
   return (
     <Box
       sx={{
-        backgroundColor: profile.bckClr,
+        backgroundColor: profile["Background Color"],
         height: "100vh",
-        color: profile.txtClr,
+        color: profile["Text Color"],
         textAlign: "center",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <h2 style={{ marginRight: "10px" }}> Hello {profile.user}! </h2>
+        <h2 style={{ marginRight: "10px" }}> Hello {profile["Username"]}! </h2>
         <Clock />
       </Box>
       {finData.loading === "true" ? <LinearProgress /> : <ToggleData />}
@@ -108,7 +109,7 @@ export default function Profile() {
       {debitOrCredit === "debit" ? debitList() : creditList()}
       <br />
       <br />
-      {profile.disableForm === "false" && <Form data={profile} changeData={handleSubmit} />}
+      {disableForm === "false" && <Form data={profile} changeData={handleSubmit} />}
     </Box>
   );
 }
